@@ -1,5 +1,13 @@
 <template>
   <div class="portfolio" :data-theme="theme" id="top">
+    <!-- ✅ FIX 1: Transition + SplashIntro correctly wired -->
+    <Transition name="splash">
+      <SplashIntro
+        v-if="showSplash"
+        @finish="showSplash = false"
+      />
+    </Transition>
+
     <header class="site-header">
       <div class="navbar">
         <a href="/" class="brand">
@@ -186,6 +194,7 @@ import {
   FlaskConical, LayoutDashboard, Building2, Mail, MapPin,
   Clock, Info, ArrowUp, ArrowUpRight, X, FileText
 } from "lucide-vue-next";
+import SplashIntro from "./components/SplashIntro.vue";
 
 export default {
   name: "App",
@@ -193,7 +202,8 @@ export default {
   components: {
     Search, Sun, Moon, Home, Users, Briefcase, Newspaper,
     FlaskConical, LayoutDashboard, Building2, Mail, MapPin,
-    Clock, Info, ArrowUp, ArrowUpRight, X, FileText
+    Clock, Info, ArrowUp, ArrowUpRight, X, FileText,
+    SplashIntro // ✅ FIX 2: register the component
   },
 
   data() {
@@ -203,9 +213,12 @@ export default {
       query: "",
       searchFocused: false,
       showWelcome: false,
+      showSplash: true, // ✅ FIX 3: declare it inside data() — this was the missing piece
 
       translations: {
-        /* ============ ENGLISH ============ */
+        /* ============================================================
+           ENGLISH
+           ============================================================ */
         en: {
           "brand.name": "KITABI SECTOR",
           "brand.tagline": "DIGITAL PORTFOLIO",
@@ -238,7 +251,7 @@ export default {
           "welcome.message": "Explore Kitabi Sector's digital portfolio — services, research, and community updates.",
           "welcome.close": "Dismiss",
 
-          /* ===== ABOUT ===== */
+          /* ABOUT */
           "about.eyebrow": "WELCOME TO KITABI SECTOR",
           "about.title": "About Our",
           "about.titleSpan": "Sector",
@@ -291,7 +304,7 @@ export default {
           "about.ctaText": "A better community starts with informed residents and shared responsibility.",
           "about.ctaButton": "District Website",
 
-          /* ===== ADMIN ===== */
+          /* ADMIN */
           "admin.eyebrow": "KITABI SECTOR • LEADERSHIP",
           "admin.title": "Sector",
           "admin.titleSpan": "Administration",
@@ -343,7 +356,7 @@ export default {
           "admin.modalNote": "Official names and individual duties should be confirmed with the relevant administration.",
           "admin.modalClose": "Close",
 
-          /* ===== SERVICES ===== */
+          /* SERVICES */
           "services.eyebrow": "PUBLIC SERVICE • COMMUNITY SUPPORT",
           "services.title": "Services for",
           "services.titleSpan": "Everyone",
@@ -424,7 +437,7 @@ export default {
           "services.svc8Details": "Residents can seek guidance on how to raise a question or provide feedback through the appropriate official communication channel.",
           "services.svc8Next": "Identify the responsible office and use its verified contact information to submit your inquiry.",
 
-          /* ===== DASHBOARD ===== */
+          /* DASHBOARD */
           "dashboard.tag": "KITABI SECTOR DIGITAL PORTFOLIO",
           "dashboard.welcome": "Welcome to Your Dashboard",
           "dashboard.welcomeText": "A central overview of community information, public services, announcements, and local development.",
@@ -501,7 +514,7 @@ export default {
           "dashboard.ann3Date": "Sample notice",
           "dashboard.ann3Desc": "Add confirmed details about community meetings, including dates, locations, and participation requirements.",
 
-          /* ===== MEDIA ===== */
+          /* MEDIA */
           "media.notifTitle": "Notifications",
           "media.notifText1": "You are viewing the Media Center.",
           "media.notifText2": "New official announcements will appear here when connected.",
@@ -567,7 +580,7 @@ export default {
           "media.item6Date": "Video Collection",
           "media.item6Desc": "A sample feature about teamwork and community development.",
 
-          /* ===== RESEARCH ===== */
+          /* RESEARCH */
           "research.notifTitle": "Notifications",
           "research.notifText1": "You are viewing the Research Center.",
           "research.notifText2": "New research announcements will appear here when available.",
@@ -660,7 +673,7 @@ export default {
           "research.r6Title": "Rural Infrastructure and Service Access",
           "research.r6Desc": "Sample record about infrastructure and access to essential services.",
 
-          /* ===== CONTACT ===== */
+          /* CONTACT */
           "contact.notifTitle": "Notifications",
           "contact.notifText1": "You are viewing the Contact Center.",
           "contact.notifText2": "New messages will appear here when notifications are connected.",
@@ -722,7 +735,7 @@ export default {
           "contact.faq4Q": "Will I receive a response after submitting this form?",
           "contact.faq4A": "Not yet. This frontend demonstration validates your entries and displays a confirmation, but sending and receiving messages requires a backend or a connected email service.",
 
-          /* ===== HOME ===== */
+          /* HOME */
           "home.welcome": "WELCOME TO",
           "home.heroTitle": "Kitabi Sector",
           "home.heroSubtitle": "Nyamagabe District, Southern Province, Rwanda",
@@ -780,7 +793,9 @@ export default {
           "home.ctaButton": "Visit District Website"
         },
 
-        /* ============ KINYARWANDA ============ */
+        /* ============================================================
+           KINYARWANDA
+           ============================================================ */
         rw: {
           "brand.name": "UMURENGE WA KITABI",
           "brand.tagline": "URUBUGA MBARU",
@@ -813,7 +828,6 @@ export default {
           "welcome.message": "Menya urubuga mbara rw'Umurenge wa Kitabi — serivisi, ubushakashatsi n'amakuru y'abaturage.",
           "welcome.close": "Funga",
 
-          /* ===== ABOUT ===== */
           "about.eyebrow": "IKAZE KURI UMURENGE WA KITABI",
           "about.title": "Abo turi bo mu",
           "about.titleSpan": "Murenge",
@@ -866,7 +880,6 @@ export default {
           "about.ctaText": "Umuryango mwiza utangira ku baturage bafite amakuru n'inshingano zisangiwe.",
           "about.ctaButton": "Urubuga rw'Akarere",
 
-          /* ===== ADMIN ===== */
           "admin.eyebrow": "UMURENGE WA KITABI • UBUYOBOZI",
           "admin.title": "Ubuyobozi bw'",
           "admin.titleSpan": "Umurenge",
@@ -918,7 +931,6 @@ export default {
           "admin.modalNote": "Amazina yemewe n'inshingano z'umuntu ku giti cye bagomba kwemezwa n'ubuyobozi bukwiye.",
           "admin.modalClose": "Funga",
 
-          /* ===== SERVICES ===== */
           "services.eyebrow": "SERIVISI ZA LETA • UBUFASHA BW'UMURYANGO",
           "services.title": "Serivisi ku",
           "services.titleSpan": "Bose",
@@ -999,12 +1011,11 @@ export default {
           "services.svc8Details": "Abaturage bashobora gushaka ubuyobozi ku uko batanga ikibazo cyangwa ibitekerezo binyuze mu buryo bwemewe bwo kuvugana.",
           "services.svc8Next": "Mena ibiro bishinzwe kandi ukoreshe amakuru yabyo yemewe yo kohereza ikibazo cyawe.",
 
-          /* ===== DASHBOARD ===== */
           "dashboard.tag": "URUBUGA MBARU RW'UMURENGE WA KITABI",
           "dashboard.welcome": "Murakaza neza ku Imbonerahamwe Yawe",
           "dashboard.welcomeText": "Incamake y'ibanze ku makuru y'umuryango, serivisi za Leta, amatangazo, n'iterambere ry'ibanze.",
           "dashboard.exploreServices": "Reba Serivisi",
-          "dashboard.glance": "MU NSHAMake",
+          "dashboard.glance": "MU NSHAMAKE",
           "dashboard.summary": "Incamake y'Umurenge",
           "dashboard.summaryText": "Incamake ku makuru y'ingenzi y'urubuga.",
           "dashboard.demoBadge": "AMAKURU Y'URUGERO",
@@ -1076,7 +1087,6 @@ export default {
           "dashboard.ann3Date": "Itangazo ry'urugero",
           "dashboard.ann3Desc": "Ongeraho ibisobanuro byemejwe ku nama z'umuryango, harimo amatariki, ahantu, n'ibisabwa mu kwitabira.",
 
-          /* ===== MEDIA ===== */
           "media.notifTitle": "Amatangazo",
           "media.notifText1": "Urareba Ikigo cy'Amakuru.",
           "media.notifText2": "Amatangazo mashya azagaragara hano iyo ahuze.",
@@ -1142,7 +1152,6 @@ export default {
           "media.item6Date": "Videwo",
           "media.item6Desc": "Ingero zerekana gukorera hamwe n'iterambere ry'umuryango.",
 
-          /* ===== RESEARCH ===== */
           "research.notifTitle": "Amatangazo",
           "research.notifText1": "Urareba Ikigo cy'Ubushakashatsi.",
           "research.notifText2": "Amatangazo mashya y'ubushakashatsi azagaragara hano iyo abonetse.",
@@ -1235,7 +1244,6 @@ export default {
           "research.r6Title": "Ibikorwa Remezo by'Icyaro no Kubona Serivisi",
           "research.r6Desc": "Ingero y'inyandiko ku bikorwa remezo no kubona serivisi z'ibanze.",
 
-          /* ===== CONTACT ===== */
           "contact.notifTitle": "Amatangazo",
           "contact.notifText1": "Urareba Ikigo cy'Itumanaho.",
           "contact.notifText2": "Ubutumwa bushya buzagaragara hano iyo ubutumwa buhujwe.",
@@ -1297,7 +1305,6 @@ export default {
           "contact.faq4Q": "Nzabona igisubizo nyuma yo kohereza iyi fishi?",
           "contact.faq4A": "Ntibirabaho. Iki gerageza cy'uruhande rw'imbere cyemeza ibyanditswe kandi kigaragaza ikimenyetso, ariko kohereza no kwakira ubutumwa bisaba sisitemu cyangwa serivisi ya imeyili ihujwe.",
 
-          /* ===== HOME ===== */
           "home.welcome": "IKAZE KURI",
           "home.heroTitle": "Umurenge wa Kitabi",
           "home.heroSubtitle": "Akarere ka Nyamagabe, Intara y'Amajyepfo, u Rwanda",
@@ -1355,15 +1362,15 @@ export default {
           "home.ctaButton": "Sura Urubuga rw'Akarere"
         },
 
-        /* ============ FRENCH ============ */
-        fr: {
-          /* … identical structure — copy the English block and translate … */
-        },
+        /* ============================================================
+           FRENCH — fill in with translations (falls back to EN if empty)
+           ============================================================ */
+        fr: {},
 
-        /* ============ SWAHILI ============ */
-        sw: {
-          /* … identical structure — copy the English block and translate … */
-        }
+        /* ============================================================
+           SWAHILI — fill in with translations (falls back to EN if empty)
+           ============================================================ */
+        sw: {}
       },
 
       searchIndex: [
@@ -1413,6 +1420,10 @@ export default {
     theme(value) {
       document.documentElement.setAttribute("data-theme", value);
       localStorage.setItem("ks-theme", value);
+    },
+    // ✅ FIX 4: lock body scroll while splash is visible
+    showSplash(value) {
+      document.body.style.overflow = value ? "hidden" : "";
     }
   },
 
@@ -1426,11 +1437,15 @@ export default {
     if (savedLang) this.language = savedLang;
     document.documentElement.lang = this.language;
 
+    // ✅ FIX 5: lock scroll immediately on mount (splash is visible by default)
+    document.body.style.overflow = "hidden";
+
     const shownThisSession = sessionStorage.getItem("ks-welcome-shown");
     if (!shownThisSession) {
-      setTimeout(() => { this.showWelcome = true; }, 800);
+      // Only show the welcome toast AFTER the splash is done
+      setTimeout(() => { this.showWelcome = true; }, 4200);
       sessionStorage.setItem("ks-welcome-shown", "1");
-      setTimeout(() => { this.showWelcome = false; }, 6800);
+      setTimeout(() => { this.showWelcome = false; }, 11000);
     }
 
     document.addEventListener("click", this.handleClickOutside);
@@ -1438,6 +1453,7 @@ export default {
 
   beforeUnmount() {
     document.removeEventListener("click", this.handleClickOutside);
+    document.body.style.overflow = "";
   },
 
   methods: {
@@ -1937,6 +1953,10 @@ a { color: inherit; }
 .slide-up-leave-active { transition: opacity 0.35s ease, transform 0.35s ease; }
 .slide-up-enter-from,
 .slide-up-leave-to { opacity: 0; transform: translateY(20px); }
+
+/* ✅ FIX 6: splash transition — fade out the overlay when showSplash becomes false */
+.splash-leave-active { transition: opacity 0.5s ease; }
+.splash-leave-to { opacity: 0; }
 
 /* RESPONSIVE */
 @media (max-width: 1250px) {
