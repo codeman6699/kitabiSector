@@ -11,7 +11,8 @@
     <header class="site-header">
       <div class="navbar">
         <a href="/" class="brand">
-          <div class="mark">KS</div>
+          <!-- ✅ FIX: was ../assets/ks.png — now uses @ alias -->
+          <div class="mark"><img src="@/assets/ks.png" alt="Stream.store Logo" /></div>
           <div class="brand-name">
             {{ t("brand.name") }}
             <small>{{ t("brand.tagline") }}</small>
@@ -131,7 +132,7 @@
       <div class="footer-main">
         <div class="footer-brand-col">
           <a href="/" class="footer-brand">
-            <div class="mark">KS</div>
+            <div class="mark"><img src="@/assets/ks.png" alt="Stream.store Logo" /></div>
             <span>{{ t("brand.name") }}</span>
           </a>
           <p class="footer-tagline">{{ t("footer.tagline") }}</p>
@@ -213,12 +214,9 @@ export default {
       query: "",
       searchFocused: false,
       showWelcome: false,
-      showSplash: true, // ✅ FIX 3: declare it inside data() — this was the missing piece
+      showSplash: true, // ✅ FIX 3: declare it inside data()
 
       translations: {
-        /* ============================================================
-           ENGLISH
-           ============================================================ */
         en: {
           "brand.name": "KITABI SECTOR",
           "brand.tagline": "DIGITAL PORTFOLIO",
@@ -793,9 +791,6 @@ export default {
           "home.ctaButton": "Visit District Website"
         },
 
-        /* ============================================================
-           KINYARWANDA
-           ============================================================ */
         rw: {
           "brand.name": "UMURENGE WA KITABI",
           "brand.tagline": "URUBUGA MBARU",
@@ -1362,14 +1357,7 @@ export default {
           "home.ctaButton": "Sura Urubuga rw'Akarere"
         },
 
-        /* ============================================================
-           FRENCH — fill in with translations (falls back to EN if empty)
-           ============================================================ */
         fr: {},
-
-        /* ============================================================
-           SWAHILI — fill in with translations (falls back to EN if empty)
-           ============================================================ */
         sw: {}
       },
 
@@ -1421,7 +1409,6 @@ export default {
       document.documentElement.setAttribute("data-theme", value);
       localStorage.setItem("ks-theme", value);
     },
-    // ✅ FIX 4: lock body scroll while splash is visible
     showSplash(value) {
       document.body.style.overflow = value ? "hidden" : "";
     }
@@ -1437,12 +1424,10 @@ export default {
     if (savedLang) this.language = savedLang;
     document.documentElement.lang = this.language;
 
-    // ✅ FIX 5: lock scroll immediately on mount (splash is visible by default)
     document.body.style.overflow = "hidden";
 
     const shownThisSession = sessionStorage.getItem("ks-welcome-shown");
     if (!shownThisSession) {
-      // Only show the welcome toast AFTER the splash is done
       setTimeout(() => { this.showWelcome = true; }, 4200);
       sessionStorage.setItem("ks-welcome-shown", "1");
       setTimeout(() => { this.showWelcome = false; }, 11000);
@@ -1486,9 +1471,6 @@ export default {
 };
 </script>
 
-<!-- ============================================================
-     GLOBAL THEME — applies to ALL pages
-     ============================================================ -->
 <style>
 :root,
 [data-theme="dark"] {
@@ -1540,9 +1522,6 @@ a { color: inherit; }
 ::-webkit-scrollbar-thumb:hover { background: var(--green); }
 </style>
 
-<!-- ============================================================
-     COMPONENT STYLES
-     ============================================================ -->
 <style scoped>
 .portfolio {
   width: 100%;
@@ -1595,6 +1574,16 @@ a { color: inherit; }
   font-size: 17px;
   box-shadow: 0 0 18px rgba(46, 201, 105, 0.17);
   flex-shrink: 0;
+  overflow: hidden; /* ✅ FIX: keep logo clipped to circle */
+}
+
+/* ✅ FIX: make the logo image fill the circular .mark container */
+.mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 .brand-name {
@@ -1954,7 +1943,6 @@ a { color: inherit; }
 .slide-up-enter-from,
 .slide-up-leave-to { opacity: 0; transform: translateY(20px); }
 
-/* ✅ FIX 6: splash transition — fade out the overlay when showSplash becomes false */
 .splash-leave-active { transition: opacity 0.5s ease; }
 .splash-leave-to { opacity: 0; }
 
